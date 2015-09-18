@@ -91,7 +91,7 @@ namespace BTraderWPF.Windows.ResearchWindow
         return;
       }
 
-      var processPathAttribute = configurationElement.Element("processPath");
+      var processPathAttribute = configurationElement.Attribute("processPath");
       if (processPathAttribute == null)
       {
         MessageBox.Show("Couldn't find 'processPath' attribute in research.xml file");
@@ -99,15 +99,19 @@ namespace BTraderWPF.Windows.ResearchWindow
       }
 
       ProcessPath = processPathAttribute.Value;
+
+      var globals = ParseGlobals(globalsElement.Elements());
+      var globalArgs = ParseElementsAndEmbedGlobals(globalArgsElement.Elements(), globals);
+      var stepsClean = ParseElementsAndEmbedGlobals(stepsElement.Elements(), globals);
+
+      var processPathEmbedded = EmbedGlobals(globals, new Dictionary<string, string>() {{"-processPath", ProcessPath}});
+      ProcessPath = processPathEmbedded.Values.First();
+
       if (!File.Exists(ProcessPath))
       {
         MessageBox.Show(string.Format("No such file as {0}", ProcessPath));
         return;
       }
-
-      var globals = ParseGlobals(globalsElement.Elements());
-      var globalArgs = ParseElementsAndEmbedGlobals(globalArgsElement.Elements(), globals);
-      var stepsClean = ParseElementsAndEmbedGlobals(stepsElement.Elements(), globals);
 
       // aggregate global args
       var globalArgsList = new List<String>();
@@ -147,6 +151,13 @@ namespace BTraderWPF.Windows.ResearchWindow
     {
       var parsedElements = GetDictionaryFromElements(elements);
 
+      var result = EmbedGlobals(globals, parsedElements);
+
+      return result;
+    }
+
+    private static Dictionary<string, string> EmbedGlobals(Dictionary<string, string> globals, Dictionary<string, string> parsedElements)
+    {
       var result = new Dictionary<string, string>(parsedElements);
       foreach (var keyValuePair in parsedElements)
       {
@@ -157,7 +168,6 @@ namespace BTraderWPF.Windows.ResearchWindow
           result[key] = result[key].Replace(global.Key, global.Value);
         }
       }
-
       return result;
     }
 

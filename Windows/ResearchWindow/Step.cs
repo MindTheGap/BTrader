@@ -50,6 +50,18 @@ namespace BTraderWPF.Windows.ResearchWindow
       }
     }
 
+    private string _arguments;
+    public string Arguments
+    {
+      get { return _arguments; }
+      set
+      {
+        _arguments = value;
+        _argumentsDic = Utils.ArgsToDic(value);
+        OnPropertyChanged("Arguments");
+      }
+    }
+
     private DictionaryPlus<string,string> _argumentsDic;
     public DictionaryPlus<string, string> ArgumentsDic
     {
@@ -57,6 +69,7 @@ namespace BTraderWPF.Windows.ResearchWindow
       set
       {
         _argumentsDic = value;
+        Arguments = Utils.DicToStr(value);
         OnPropertyChanged("ArgumentsDic");
       }
     }
