@@ -1,0 +1,182 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="AccountingDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Accounts">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Asset" Type="float" Nullable="false" />
+          <Property Name="Borrow" Type="float" Nullable="false" />
+          <Property Name="Free" Type="float" Nullable="false" />
+          <Property Name="Freezed" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Symbols">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Trades">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Price" Type="float" Nullable="false" />
+          <Property Name="Date" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="SymbolId" Type="int" Nullable="false" />
+          <Property Name="Type" Type="int" Nullable="false" />
+          <Property Name="Status" Type="int" />
+          <Property Name="TradeId" Type="int" />
+          <Property Name="AvgPrice" Type="float" />
+        </EntityType>
+        <Association Name="FK_Trades_Symbols">
+          <End Role="Symbols" Type="Self.Symbols" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Symbols">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="SymbolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AccountingDBModelStoreContainer">
+          <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Symbols" EntityType="Self.Symbols" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Trades" EntityType="Self.Trades" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Trades_Symbols" Association="Self.FK_Trades_Symbols">
+            <End Role="Symbols" EntitySet="Symbols" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="AccountingDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Account">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Asset" Type="Double" Nullable="false" />
+          <Property Name="Borrow" Type="Double" Nullable="false" />
+          <Property Name="Free" Type="Double" Nullable="false" />
+          <Property Name="Freezed" Type="Double" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Symbol">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Trades" Relationship="Self.FK_Trades_Symbols" FromRole="Symbols" ToRole="Trades" />
+        </EntityType>
+        <EntityType Name="Trade">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Price" Type="Double" Nullable="false" />
+          <Property Name="Date" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SymbolId" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="Int32" Nullable="false" />
+          <Property Name="Status" Type="Int32" />
+          <Property Name="TradeId" Type="Int32" />
+          <Property Name="AvgPrice" Type="Double" />
+          <NavigationProperty Name="Symbol" Relationship="Self.FK_Trades_Symbols" FromRole="Trades" ToRole="Symbols" />
+        </EntityType>
+        <Association Name="FK_Trades_Symbols">
+          <End Role="Symbols" Type="Self.Symbol" Multiplicity="1" />
+          <End Role="Trades" Type="Self.Trade" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Symbols">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Trades">
+              <PropertyRef Name="SymbolId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="AccountingDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Accounts" EntityType="Self.Account" />
+          <EntitySet Name="Symbols" EntityType="Self.Symbol" />
+          <EntitySet Name="Trades" EntityType="Self.Trade" />
+          <AssociationSet Name="FK_Trades_Symbols" Association="Self.FK_Trades_Symbols">
+            <End Role="Symbols" EntitySet="Symbols" />
+            <End Role="Trades" EntitySet="Trades" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="AccountingDBModelStoreContainer" CdmEntityContainer="AccountingDBEntities">
+          <EntitySetMapping Name="Accounts">
+            <EntityTypeMapping TypeName="AccountingDBModel.Account">
+              <MappingFragment StoreEntitySet="Accounts">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Asset" ColumnName="Asset" />
+                <ScalarProperty Name="Borrow" ColumnName="Borrow" />
+                <ScalarProperty Name="Free" ColumnName="Free" />
+                <ScalarProperty Name="Freezed" ColumnName="Freezed" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Symbols">
+            <EntityTypeMapping TypeName="AccountingDBModel.Symbol">
+              <MappingFragment StoreEntitySet="Symbols">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Trades">
+            <EntityTypeMapping TypeName="AccountingDBModel.Trade">
+              <MappingFragment StoreEntitySet="Trades">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Date" ColumnName="Date" />
+                <ScalarProperty Name="SymbolId" ColumnName="SymbolId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="TradeId" ColumnName="TradeId" />
+                <ScalarProperty Name="AvgPrice" ColumnName="AvgPrice" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

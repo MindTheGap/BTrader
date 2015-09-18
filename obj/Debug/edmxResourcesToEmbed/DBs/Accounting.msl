@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AccountingDBModelStoreContainer" CdmEntityContainer="AccountingDBEntities">
+    <EntitySetMapping Name="Accounts">
+      <EntityTypeMapping TypeName="AccountingDBModel.Account">
+        <MappingFragment StoreEntitySet="Accounts">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Asset" ColumnName="Asset" />
+          <ScalarProperty Name="Borrow" ColumnName="Borrow" />
+          <ScalarProperty Name="Free" ColumnName="Free" />
+          <ScalarProperty Name="Freezed" ColumnName="Freezed" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Symbols">
+      <EntityTypeMapping TypeName="AccountingDBModel.Symbol">
+        <MappingFragment StoreEntitySet="Symbols">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Code" ColumnName="Code" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trades">
+      <EntityTypeMapping TypeName="AccountingDBModel.Trade">
+        <MappingFragment StoreEntitySet="Trades">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="SymbolId" ColumnName="SymbolId" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="TradeId" ColumnName="TradeId" />
+          <ScalarProperty Name="AvgPrice" ColumnName="AvgPrice" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

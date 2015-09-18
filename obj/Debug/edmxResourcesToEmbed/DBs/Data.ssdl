@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DataDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="DataSource">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="AggregationCode" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="OtherDataSourceId" Type="int" />
+  </EntityType>
+  <EntityType Name="FeatureValues">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DataSourceId" Type="int" Nullable="false" />
+    <Property Name="Date" Type="datetime" Nullable="false" />
+    <Property Name="Value" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Symbols">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Trades">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Date" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SymbolId" Type="int" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="Status" Type="int" />
+    <Property Name="TradeId" Type="int" />
+    <Property Name="AvgPrice" Type="float" />
+  </EntityType>
+  <Association Name="FK_DataSource_OtherDataSource">
+    <End Role="DataSource" Type="Self.DataSource" Multiplicity="0..1" />
+    <End Role="DataSource1" Type="Self.DataSource" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DataSource">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DataSource1">
+        <PropertyRef Name="OtherDataSourceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FeatureValues_DataSource">
+    <End Role="DataSource" Type="Self.DataSource" Multiplicity="1" />
+    <End Role="FeatureValues" Type="Self.FeatureValues" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DataSource">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FeatureValues">
+        <PropertyRef Name="DataSourceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Trades_Symbols">
+    <End Role="Symbols" Type="Self.Symbols" Multiplicity="1" />
+    <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Symbols">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Trades">
+        <PropertyRef Name="SymbolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="DataDBModelStoreContainer">
+    <EntitySet Name="DataSource" EntityType="Self.DataSource" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="FeatureValues" EntityType="Self.FeatureValues" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Symbols" EntityType="Self.Symbols" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Trades" EntityType="Self.Trades" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_DataSource_OtherDataSource" Association="Self.FK_DataSource_OtherDataSource">
+      <End Role="DataSource" EntitySet="DataSource" />
+      <End Role="DataSource1" EntitySet="DataSource" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FeatureValues_DataSource" Association="Self.FK_FeatureValues_DataSource">
+      <End Role="DataSource" EntitySet="DataSource" />
+      <End Role="FeatureValues" EntitySet="FeatureValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Trades_Symbols" Association="Self.FK_Trades_Symbols">
+      <End Role="Symbols" EntitySet="Symbols" />
+      <End Role="Trades" EntitySet="Trades" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

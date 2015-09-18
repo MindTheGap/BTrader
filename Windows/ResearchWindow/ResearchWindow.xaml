@@ -1,0 +1,78 @@
+﻿<Window x:Class="BTraderWPF.Windows.ResearchWindow.ResearchWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Closing="ResearchWindow_OnClosing"
+        Title="ResearchWindow" Height="500" Width="800">
+    <Grid Background="LightBlue">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Background="LightBlue">
+            <Menu x:Name="MainMenu" Width="Auto" Background="LightBlue" Height="30" FontSize="12" DockPanel.Dock="Top" HorizontalAlignment="Left">
+                <MenuItem Header="_File" Background="LightBlue" >
+                    <MenuItem Header="_Reload Config" Command="{Binding Path=ReloadConfigCommand}" />
+                    <MenuItem Header="_Exit" Command="{Binding Path=ExitCommand}" />
+                </MenuItem>
+                <MenuItem Header="_Tools" HorizontalAlignment="Left" Background="LightBlue">
+                    <MenuItem Header="_Show Log Viewer" Command="{Binding Path=ShowLogViewerCommand}" />
+                </MenuItem>
+            </Menu>
+        </Grid>
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Column="0" Orientation="Horizontal" HorizontalAlignment="Center" >
+                <TextBlock VerticalAlignment="Center" Text="Start Date:" />
+                <DatePicker VerticalAlignment="Center" SelectedDate="{Binding Path=StartDate}" DisplayDate="{Binding Path=StartDate}" />
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" >
+                <TextBlock VerticalAlignment="Center" Text="End Date:" />
+                <DatePicker VerticalAlignment="Center" SelectedDate="{Binding Path=StartDate}" DisplayDate="{Binding Path=StartDate}" />
+            </StackPanel>
+        </Grid>
+        
+        <DataGrid Grid.Row="2" x:Name="MainDataGrid" AutoGenerateColumns="False"
+                  MouseRightButtonUp="MainDataGrid_OnMouseRightButtonUp"
+                  ItemsSource="{Binding Path=Steps}"  >
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Step Name"  Binding="{Binding Path=Name}" Width="Auto" >
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+                <DataGridTemplateColumn Width="250" Header="Progress" >
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate >
+                            <Grid >
+                                <ProgressBar x:Name="StepProgressBar" Value="{Binding Path=Progress}" Background="LightGreen" />
+                                <TextBlock Text="{Binding ElementName=StepProgressBar, Path=Value, StringFormat={}{0:0}%}" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Grid>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                    <DataGridTemplateColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTemplateColumn.HeaderStyle>
+                </DataGridTemplateColumn>
+                <DataGridTextColumn Header="Arguments" Binding="{Binding Path=Arguments}" Width="*" >
+                    <DataGridTextColumn.HeaderStyle>
+                        <Style TargetType="DataGridColumnHeader">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </DataGridTextColumn.HeaderStyle>
+                </DataGridTextColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Button Grid.Row="3" IsEnabled="{Binding Path=StartButtonEnabled}" Content="{Binding Path=StartButtonText}" Width="80" HorizontalAlignment="Right" HorizontalContentAlignment="Center" VerticalAlignment="Center" 
+                Command="{Binding Path=StartButtonCommand}" Background="LightBlue" />
+    </Grid>
+</Window>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="AccountingDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Accounts">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="Asset" Type="float" Nullable="false" />
+    <Property Name="Borrow" Type="float" Nullable="false" />
+    <Property Name="Free" Type="float" Nullable="false" />
+    <Property Name="Freezed" Type="float" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Symbols">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Code" Type="nvarchar" MaxLength="50" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Trades">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Price" Type="float" Nullable="false" />
+    <Property Name="Date" Type="nvarchar" MaxLength="50" Nullable="false" />
+    <Property Name="SymbolId" Type="int" Nullable="false" />
+    <Property Name="Type" Type="int" Nullable="false" />
+    <Property Name="Status" Type="int" />
+    <Property Name="TradeId" Type="int" />
+    <Property Name="AvgPrice" Type="float" />
+  </EntityType>
+  <Association Name="FK_Trades_Symbols">
+    <End Role="Symbols" Type="Self.Symbols" Multiplicity="1" />
+    <End Role="Trades" Type="Self.Trades" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Symbols">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Trades">
+        <PropertyRef Name="SymbolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="AccountingDBModelStoreContainer">
+    <EntitySet Name="Accounts" EntityType="Self.Accounts" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Symbols" EntityType="Self.Symbols" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Trades" EntityType="Self.Trades" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK_Trades_Symbols" Association="Self.FK_Trades_Symbols">
+      <End Role="Symbols" EntitySet="Symbols" />
+      <End Role="Trades" EntitySet="Trades" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

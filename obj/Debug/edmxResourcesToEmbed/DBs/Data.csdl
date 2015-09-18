@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DataDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="DataDBEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="DataSources" EntityType="DataDBModel.DataSource" />
+    <EntitySet Name="FeatureValues" EntityType="DataDBModel.FeatureValue" />
+    <EntitySet Name="Symbols" EntityType="DataDBModel.Symbol" />
+    <EntitySet Name="Trades" EntityType="DataDBModel.Trade" />
+    <AssociationSet Name="FK_DataSource_OtherDataSource" Association="DataDBModel.FK_DataSource_OtherDataSource">
+      <End Role="DataSource" EntitySet="DataSources" />
+      <End Role="DataSource1" EntitySet="DataSources" />
+    </AssociationSet>
+    <AssociationSet Name="FK_FeatureValues_DataSource" Association="DataDBModel.FK_FeatureValues_DataSource">
+      <End Role="DataSource" EntitySet="DataSources" />
+      <End Role="FeatureValue" EntitySet="FeatureValues" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Trades_Symbols" Association="DataDBModel.FK_Trades_Symbols">
+      <End Role="Symbol" EntitySet="Symbols" />
+      <End Role="Trade" EntitySet="Trades" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="DataSource">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="AggregationCode" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="OtherDataSourceId" Type="Int32" />
+    <NavigationProperty Name="DataSource1" Relationship="DataDBModel.FK_DataSource_OtherDataSource" FromRole="DataSource" ToRole="DataSource1" />
+    <NavigationProperty Name="DataSource2" Relationship="DataDBModel.FK_DataSource_OtherDataSource" FromRole="DataSource1" ToRole="DataSource" />
+    <NavigationProperty Name="FeatureValues" Relationship="DataDBModel.FK_FeatureValues_DataSource" FromRole="DataSource" ToRole="FeatureValue" />
+  </EntityType>
+  <EntityType Name="FeatureValue">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DataSourceId" Type="Int32" Nullable="false" />
+    <Property Name="Date" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Value" Type="Double" Nullable="false" />
+    <NavigationProperty Name="DataSource" Relationship="DataDBModel.FK_FeatureValues_DataSource" FromRole="FeatureValue" ToRole="DataSource" />
+  </EntityType>
+  <EntityType Name="Symbol">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Code" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Trades" Relationship="DataDBModel.FK_Trades_Symbols" FromRole="Symbol" ToRole="Trade" />
+  </EntityType>
+  <EntityType Name="Trade">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Price" Type="Double" Nullable="false" />
+    <Property Name="Date" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="SymbolId" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="Int32" Nullable="false" />
+    <Property Name="Status" Type="Int32" />
+    <Property Name="TradeId" Type="Int32" />
+    <Property Name="AvgPrice" Type="Double" />
+    <NavigationProperty Name="Symbol" Relationship="DataDBModel.FK_Trades_Symbols" FromRole="Trade" ToRole="Symbol" />
+  </EntityType>
+  <Association Name="FK_DataSource_OtherDataSource">
+    <End Type="DataDBModel.DataSource" Role="DataSource" Multiplicity="0..1" />
+    <End Type="DataDBModel.DataSource" Role="DataSource1" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DataSource">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="DataSource1">
+        <PropertyRef Name="OtherDataSourceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_FeatureValues_DataSource">
+    <End Type="DataDBModel.DataSource" Role="DataSource" Multiplicity="1" />
+    <End Type="DataDBModel.FeatureValue" Role="FeatureValue" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DataSource">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="FeatureValue">
+        <PropertyRef Name="DataSourceId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Trades_Symbols">
+    <End Type="DataDBModel.Symbol" Role="Symbol" Multiplicity="1" />
+    <End Type="DataDBModel.Trade" Role="Trade" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Symbol">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Trade">
+        <PropertyRef Name="SymbolId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

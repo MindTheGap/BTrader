@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DataDBModelStoreContainer" CdmEntityContainer="DataDBEntities">
+    <EntitySetMapping Name="DataSources">
+      <EntityTypeMapping TypeName="DataDBModel.DataSource">
+        <MappingFragment StoreEntitySet="DataSource">
+          <ScalarProperty Name="OtherDataSourceId" ColumnName="OtherDataSourceId" />
+          <ScalarProperty Name="AggregationCode" ColumnName="AggregationCode" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FeatureValues">
+      <EntityTypeMapping TypeName="DataDBModel.FeatureValue">
+        <MappingFragment StoreEntitySet="FeatureValues">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="DataSourceId" ColumnName="DataSourceId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Symbols">
+      <EntityTypeMapping TypeName="DataDBModel.Symbol">
+        <MappingFragment StoreEntitySet="Symbols">
+          <ScalarProperty Name="Code" ColumnName="Code" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Trades">
+      <EntityTypeMapping TypeName="DataDBModel.Trade">
+        <MappingFragment StoreEntitySet="Trades">
+          <ScalarProperty Name="AvgPrice" ColumnName="AvgPrice" />
+          <ScalarProperty Name="TradeId" ColumnName="TradeId" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="SymbolId" ColumnName="SymbolId" />
+          <ScalarProperty Name="Date" ColumnName="Date" />
+          <ScalarProperty Name="Price" ColumnName="Price" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

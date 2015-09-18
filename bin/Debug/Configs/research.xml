@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Configuration processPath="%BaseFolder%\bins\ML.exe" >
+  <Steps>
+    <Step key="Generate Features" value="-actionType GenerateFeatures -configFile %BaseFolder%\configurations\features\features.xml " />
+    <Step key="Generate Instances" value="-actionType GenerateInstances -configFile %BaseFolder%\configurations\instances\instances.xml " />
+    <Step key="Generate Instances2" value="-actionType GenerateInstances -configFile %BaseFolderSecond%\configurations\instances\instances.xml " />
+    <Step key="Generate Instances3" value="-actionType GenerateInstances -configFile %BaseFolderThird%\configurations\instances\instances.xml " />
+    <Step key="Generate Instances4" value="-actionType GenerateInstances -configFile %BaseFolderForth%\configurations\instances\instances.xml " />
+    <Step key="Classify" value="-actionType Classify " />
+  </Steps>
+  <GlobalArgs>
+    <GlobalArg key="-action" value="ML" />
+  </GlobalArgs>
+  <Globals>
+    <Global key="%BaseFolder%" value="D:\BTrader" />
+    <Global key="%BaseFolderSecond%" value="%BaseFolder%\Second" />
+    <Global key="%BaseFolderThird%" value="%BaseFolder%\Third\%Stam%" />
+    <Global key="%BaseFolderForth%" value="%BaseFolderThird%\Forth\%Stam%" />
+    <Global key="%Stam%" value="Stam" />
+  </Globals>
+</Configuration>
